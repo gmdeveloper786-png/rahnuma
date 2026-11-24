@@ -1,0 +1,6 @@
+{
+  "name": "Rahnuma — Islamic & Family Counselling Portal",
+  "description": "Confidential Islamic religious guidance, verified fatwa repository, online family counselling, and crisis safeguarding portal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
