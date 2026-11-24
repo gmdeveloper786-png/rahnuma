@@ -32,6 +32,7 @@ import {
   Bookmark,
 } from 'lucide-react';
 import { usePortal } from '@/context/PortalContext';
+import RoleVerificationGuideModal from '@/components/RoleVerificationGuideModal';
 import { ALL_CASE_STATUSES } from '@/types/rahnuma';
 import type {
   CaseStatus,
@@ -300,6 +301,7 @@ export default function RoleWorkspacesView() {
 
   // Super Admin sub-state
   const [superTab, setSuperTab] = useState<'rbac' | 'security' | 'audit'>('rbac');
+  const [isRoleGuideOpen, setRoleGuideOpen] = useState(false);
   const [escalationOwnerDraft, setEscalationOwnerDraft] = useState(store.settings.escalationOwner);
   const [responseLimitDraft, setResponseLimitDraft] = useState(store.settings.responseLimitHours);
   const [auditFilter, setAuditFilter] = useState<'all' | 'governance' | 'safeguarding'>('all');
@@ -966,6 +968,14 @@ export default function RoleWorkspacesView() {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setRoleGuideOpen(true)}
+              className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-semibold text-[#B45309] hover:bg-amber-100"
+            >
+              <BookOpenCheck className="h-3.5 w-3.5" />
+              {activeRole === 'super_admin' ? 'A–Z Verification Guide' : 'Role Guide'}
+            </button>
             <button
               type="button"
               onClick={() => setActiveView('home')}
@@ -4000,6 +4010,12 @@ export default function RoleWorkspacesView() {
           )}
         </div>
       )}
+
+      <RoleVerificationGuideModal
+        isOpen={isRoleGuideOpen}
+        onClose={() => setRoleGuideOpen(false)}
+        activeRole={activeRole}
+      />
     </div>
   );
 }
