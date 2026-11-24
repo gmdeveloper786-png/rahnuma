@@ -53,3 +53,28 @@
     transform: scaleX(0);
   }
 }
+
+@keyframes topbar-marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-topbar-marquee {
+  display: flex;
+  width: max-content;
+  animation: topbar-marquee 34s linear infinite;
+}
+
+.animate-topbar-marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-topbar-marquee {
+    animation: none;
+  }
+}

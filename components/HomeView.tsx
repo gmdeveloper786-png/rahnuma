@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import {
-  Search,
   Video,
   BookOpen,
   ShieldAlert,
@@ -18,6 +17,7 @@ import {
   Landmark,
   Baby,
   ChevronDown,
+  ChevronLeft,
   ChevronRight,
   Star,
   CheckCircle2,
@@ -31,8 +31,77 @@ import {
   Trash2,
 } from 'lucide-react';
 import { usePortal } from '@/context/PortalContext';
-import { MEDIA_ASSETS } from '@/lib/media';
+import { MEDIA_ASSETS, type MediaImageKey } from '@/lib/media';
 import type { SpecialistDiscipline } from '@/types/rahnuma';
+
+interface HeroSlide {
+  id: string;
+  label: string;
+  headingPrefix: string;
+  headingHighlight: string;
+  headingSuffix: string;
+  description: string;
+  imageKey: MediaImageKey;
+  imageAlt: string;
+}
+
+const HERO_SLIDES: HeroSlide[] = [
+  {
+    id: 'domestic-abuse',
+    label: 'Domestic Abuse',
+    headingPrefix: 'Safe & Confidential Support for ',
+    headingHighlight: 'Domestic Abuse',
+    headingSuffix: '',
+    description:
+      'Access discreet safeguarding, trauma-informed counselling, and Islamic legal guidance in a private space where your safety always comes first—never forced mediation.',
+    imageKey: 'slide_domestic_abuse',
+    imageAlt: 'Protective sanctuary shield and warm lantern symbolizing domestic safety and refuge',
+  },
+  {
+    id: 'child-abuse',
+    label: 'Child Abuse',
+    headingPrefix: 'Urgent Protection & Care Against ',
+    headingHighlight: 'Child Abuse',
+    headingSuffix: '',
+    description:
+      'Connect with trained safeguarding coordinators, child-protection specialists, and compassionate clinical support to protect vulnerable children with strict confidentiality.',
+    imageKey: 'slide_child_abuse',
+    imageAlt: 'Warm crescent lantern and protective arch symbolizing child safety and care',
+  },
+  {
+    id: 'khula',
+    label: 'Khula',
+    headingPrefix: 'Verified Islamic Guidance on ',
+    headingHighlight: 'Khula',
+    headingSuffix: ' & Rights',
+    description:
+      'Receive authenticated scholarly rulings from qualified Muftis alongside clear civil-law guidance on Mahr, child custody, and respectful separation procedures.',
+    imageKey: 'slide_khula',
+    imageAlt: 'Balanced scales of justice and classical Islamic jurisprudence book symbolizing Khula guidance',
+  },
+  {
+    id: 'divorce',
+    label: 'Divorce',
+    headingPrefix: 'Clear Scholarly Counsel for ',
+    headingHighlight: 'Divorce',
+    headingSuffix: ' (Talaq)',
+    description:
+      'Consult verified Islamic scholars and family advisors for accurate Talaq rulings, Iddah and maintenance clarity, and dignified guidance through difficult transitions.',
+    imageKey: 'slide_divorce',
+    imageAlt: 'Verified Islamic ruling document with scholar seal symbolizing dignified guidance on Divorce',
+  },
+  {
+    id: 'marriage-nikah',
+    label: 'Marriage & Nikah',
+    headingPrefix: 'Trusted Guidance for ',
+    headingHighlight: 'Marriage & Nikah',
+    headingSuffix: '',
+    description:
+      'Build a harmonious Muslim home with pre-marital preparation, Nikah contract guidance, mutual spousal rights in Islam, and confidential family counselling.',
+    imageKey: 'slide_marriage_nikah',
+    imageAlt: 'Intertwined golden rings and Nikahnama emblem symbolizing blessed Marriage and Nikah',
+  },
+];
 
 const CONCERNS = [
   { label: 'Talaq & Khula', icon: Scale, bg: 'bg-amber-50 text-amber-700' },
@@ -114,24 +183,26 @@ export default function HomeView() {
     clearRecentActivity,
   } = usePortal();
 
-  const [heroTopic, setHeroTopic] = useState('All');
-  const [heroQuery, setHeroQuery] = useState('');
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isSliderPaused, setIsSliderPaused] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
-  const handleHeroSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (heroTopic === 'Verified Fatwas') {
-      navigateToKnowledge('fatwas', 'All', heroQuery);
-      return;
-    }
-    if (heroTopic === 'Knowledge Guides') {
-      navigateToKnowledge('knowledge', 'All', heroQuery);
-      return;
-    }
-    navigateToDirectory({
-      query: heroQuery,
-      specialty: heroTopic === 'All' ? 'All' : heroTopic,
-    });
+  useEffect(() => {
+    if (isSliderPaused) return;
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, 5500);
+    return () => clearInterval(timer);
+  }, [isSliderPaused]);
+
+  const currentSlide = HERO_SLIDES[activeSlide];
+
+  const handlePrevSlide = () => {
+    setActiveSlide((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+  };
+
+  const handleNextSlide = () => {
+    setActiveSlide((prev) => (prev + 1) % HERO_SLIDES.length);
   };
 
   const featuredSpecialists = store.specialists.slice(0, 4);
@@ -139,98 +210,88 @@ export default function HomeView() {
 
   return (
     <div className="pb-16">
-      {/* 1. Oladoc-Inspired Hero Search Banner */}
+      {/* 1. 5-Slide Hero Carousel */}
       <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
-        <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-[#064E3B] via-[#043D2F] to-[#022C22] text-white">
-          <div className="grid grid-cols-1 items-stretch lg:grid-cols-12">
-            <div className="flex flex-col justify-center px-6 py-10 sm:px-10 lg:col-span-7 lg:py-12">
-              <p className="text-xs font-medium tracking-wide text-amber-300">
-                Confidential guidance · Verified scholarship · Online counselling
-              </p>
-              <h1
-                className="mt-3 font-display text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl lg:text-[42px]"
-                style={{ textWrap: 'balance' }}
-              >
-                Find and Consult <span className="text-[#F59E0B]">Trusted Scholars</span> &amp;
-                Family Counsellors
-              </h1>
-              <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-200 sm:text-base">
-                Search verified fatwas, submit private marital or inheritance queries, and book
-                confidential online sessions with qualified Muftis, therapists, and legal advisors.
-              </p>
-
-              {/* Unified Search Widget */}
-              <form
-                onSubmit={handleHeroSearch}
-                className="mt-7 flex flex-col gap-2 rounded-xl bg-white p-2 shadow-sm sm:flex-row sm:items-center"
-              >
-                <select
-                  id="hero-search-category"
-                  name="category"
-                  aria-label="Select search category"
-                  value={heroTopic}
-                  onChange={(e) => setHeroTopic(e.target.value)}
-                  className="h-11 rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm font-medium text-slate-800 focus:border-[#064E3B] focus:outline-none sm:w-48"
+        <div
+          onMouseEnter={() => setIsSliderPaused(true)}
+          onMouseLeave={() => setIsSliderPaused(false)}
+          className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#064E3B] via-[#043D2F] to-[#022C22] text-white"
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlide.id}
+              initial={{ opacity: 0, x: 18 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -18 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="grid min-h-[320px] grid-cols-1 items-stretch lg:min-h-[360px] lg:grid-cols-12"
+            >
+              <div className="flex flex-col justify-center px-6 py-10 pb-16 sm:px-10 lg:col-span-7 lg:py-12 lg:pb-16">
+                <h1
+                  className="font-display text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl lg:text-[42px]"
+                  style={{ textWrap: 'balance' }}
                 >
-                  <option value="All">All Concerns</option>
-                  <option value="Talaq & Khula">Talaq &amp; Khula</option>
-                  <option value="Marital Conflict">Marital Conflict</option>
-                  <option value="Inheritance (Mirath)">Inheritance (Mirath)</option>
-                  <option value="Parenting & Custody">Parenting &amp; Custody</option>
-                  <option value="Grief & Emotional Distress">Grief &amp; Distress</option>
-                  <option value="Verified Fatwas">Search Fatwas</option>
-                  <option value="Knowledge Guides">Search Guides</option>
-                </select>
+                  {currentSlide.headingPrefix}
+                  <span className="text-[#F59E0B]">{currentSlide.headingHighlight}</span>
+                  {currentSlide.headingSuffix}
+                </h1>
+                <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-200 sm:text-base">
+                  {currentSlide.description}
+                </p>
+              </div>
 
-                <div className="relative flex-1">
-                  <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                  <input
-                    id="hero-search-query"
-                    name="query"
-                    aria-label="Search scholars, fatwas, or topics"
-                    type="text"
-                    value={heroQuery}
-                    onChange={(e) => setHeroQuery(e.target.value)}
-                    placeholder="Scholars, fatwas, Khula, custody, Mirath..."
-                    className="h-11 w-full rounded-lg bg-white pl-9 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none"
-                  />
-                </div>
+              {/* Right editorial slide illustration */}
+              <div className="relative hidden min-h-[320px] lg:col-span-5 lg:block">
+                <Image
+                  src={MEDIA_ASSETS[currentSlide.imageKey]}
+                  alt={currentSlide.imageAlt}
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 42vw, 100vw"
+                  className="object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#043D2F] via-[#043D2F]/25 to-transparent" />
+              </div>
+            </motion.div>
+          </AnimatePresence>
 
+          {/* Slider Navigation Controls */}
+          <div className="absolute inset-x-0 bottom-4 z-10 flex items-center justify-between px-6 sm:px-10">
+            <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="Hero slides">
+              {HERO_SLIDES.map((slide, idx) => (
                 <button
-                  type="submit"
-                  className="h-11 whitespace-nowrap shrink-0 rounded-lg bg-[#064E3B] px-6 text-sm font-semibold text-white transition-colors hover:bg-[#053B2D]"
-                >
-                  Search
-                </button>
-              </form>
+                  key={slide.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={idx === activeSlide}
+                  aria-label={`Slide ${idx + 1}: ${slide.label}`}
+                  onClick={() => setActiveSlide(idx)}
+                  className={`h-2.5 rounded-full transition-all ${
+                    idx === activeSlide
+                      ? 'w-8 bg-[#F59E0B]'
+                      : 'w-2.5 bg-white/35 hover:bg-white/60'
+                  }`}
+                />
+              ))}
             </div>
 
-            {/* Right editorial counselling studio */}
-            <div className="relative hidden min-h-[320px] lg:col-span-5 lg:block">
-              <Image
-                src={MEDIA_ASSETS.hero}
-                alt="Serene Islamic and family counselling consultation studio"
-                fill
-                priority
-                sizes="(min-width: 1024px) 42vw, 100vw"
-                referrerPolicy="no-referrer"
-                className="object-cover object-center"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#043D2F] via-[#043D2F]/45 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#022C22]/75 to-transparent" />
-              <div className="absolute bottom-4 right-4 left-6 flex items-center justify-between gap-3 rounded-xl border border-white/15 bg-[#022C22]/80 px-4 py-2.5 backdrop-blur-md">
-                <div className="flex items-center gap-2.5">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F59E0B]/20 text-[#F59E0B]">
-                    <ShieldCheck className="h-4 w-4" />
-                  </span>
-                  <div>
-                    <p className="text-xs font-semibold text-white">100% Confidential Sessions</p>
-                    <p className="text-[11px] text-emerald-200">
-                      Verified Muftis · Family Counsellors · Legal Advisors
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                aria-label="Previous slide"
+                onClick={handlePrevSlide}
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-[#022C22]/70 text-white backdrop-blur-sm transition-colors hover:bg-white/15"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                aria-label="Next slide"
+                onClick={handleNextSlide}
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-[#022C22]/70 text-white backdrop-blur-sm transition-colors hover:bg-white/15"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
             </div>
           </div>
         </div>
@@ -683,6 +744,10 @@ export default function HomeView() {
                   Sign In to Portal
                 </button>
               </div>
+              <p className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-[#064E3B]">
+                <ShieldCheck className="h-4 w-4 shrink-0" />
+                <span>Your identity stays anonymous and your data secure.</span>
+              </p>
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:col-span-7">

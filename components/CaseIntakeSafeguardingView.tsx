@@ -479,12 +479,18 @@ export default function CaseIntakeSafeguardingView({
 
               {formError && <p className="text-xs font-semibold text-rose-700">{formError}</p>}
 
-              <button
-                type="submit"
-                className="w-full rounded-lg bg-[#064E3B] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#053B2D] sm:w-auto"
-              >
-                Submit Confidential Case
-              </button>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <button
+                  type="submit"
+                  className="w-full rounded-lg bg-[#064E3B] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#053B2D] sm:w-auto"
+                >
+                  Submit Confidential Case
+                </button>
+                <p className="inline-flex items-center gap-1.5 text-xs font-medium text-[#064E3B]">
+                  <Lock className="h-3.5 w-3.5 shrink-0" />
+                  <span>Your identity stays anonymous and your data secure.</span>
+                </p>
+              </div>
             </form>
           </div>
         </div>

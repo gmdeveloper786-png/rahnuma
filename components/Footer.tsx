@@ -164,7 +164,8 @@ export default function Footer() {
             <div>
               <p className="text-sm font-semibold text-white">Confidential &amp; Discreet</p>
               <p className="mt-0.5 text-xs text-slate-300/80">
-                Pseudonym protection, isolated clinical notes, and recording disabled by default.
+                Your identity stays anonymous and your data secure—with pseudonym protection and
+                recording disabled by default.
               </p>
             </div>
           </div>

@@ -883,6 +883,11 @@ export default function RoleWorkspacesView() {
                 </button>
               </form>
             )}
+
+            <p className="mt-5 flex items-center justify-center gap-1.5 border-t border-slate-100 pt-4 text-xs font-medium text-slate-500">
+              <ShieldCheck className="h-4 w-4 shrink-0 text-[#064E3B]" />
+              <span>Your identity stays anonymous and your data secure.</span>
+            </p>
           </div>
 
           {/* Right: Pre-Seeded Role Access Directory for Testing */}
@@ -1359,6 +1364,9 @@ export default function RoleWorkspacesView() {
                       <Lock className="h-3.5 w-3.5 text-emerald-600" /> Recording Disabled
                     </span>
                   </div>
+                  <p className="mt-1 text-[11px] font-medium text-[#064E3B]">
+                    Your identity stays anonymous and your data secure.
+                  </p>
                 </div>
                 <div className="max-h-80 flex-1 space-y-3 overflow-y-auto p-5">
                   {activeUserThreadMessages.length === 0 ? (

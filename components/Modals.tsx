@@ -9,6 +9,7 @@ import {
   FileText,
   Paperclip,
   KeyRound,
+  ShieldCheck,
 } from 'lucide-react';
 import { usePortal } from '@/context/PortalContext';
 import type { AttachmentMeta, ConsultationMode, SchoolOfThought } from '@/types/rahnuma';
@@ -322,6 +323,11 @@ export default function Modals() {
                 <span>Send discreet reminder (recording disabled by default)</span>
               </label>
 
+              <p className="flex items-center gap-1.5 rounded-lg bg-[#ECFDF5] px-3 py-2 text-[11px] font-medium text-[#064E3B]">
+                <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
+                <span>Your identity stays anonymous and your data secure.</span>
+              </p>
+
               <div className="flex justify-end gap-2 border-t border-slate-200 pt-4">
                 <button
                   type="button"
@@ -444,6 +450,11 @@ export default function Modals() {
               </div>
 
               {fatwaError && <p className="text-xs font-semibold text-rose-700">{fatwaError}</p>}
+
+              <p className="flex items-center gap-1.5 rounded-lg bg-[#ECFDF5] px-3 py-2 text-[11px] font-medium text-[#064E3B]">
+                <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
+                <span>Your identity stays anonymous and your data secure.</span>
+              </p>
 
               <div className="flex justify-end gap-2 border-t border-slate-200 pt-4">
                 <button
@@ -625,6 +636,11 @@ export default function Modals() {
                   ? 'Create & Verify Account'
                   : 'Reset Password'}
               </button>
+
+              <p className="flex items-center justify-center gap-1.5 pt-1 text-[11px] font-medium text-slate-500">
+                <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-[#064E3B]" />
+                <span>Your identity stays anonymous and your data secure.</span>
+              </p>
             </form>
           </div>
         </div>

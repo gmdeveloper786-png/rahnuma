@@ -2,9 +2,30 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
+import { Lock, Menu, ShieldCheck, Sparkles, X } from 'lucide-react';
 import { usePortal, VIEW_PATHS } from '@/context/PortalContext';
 import type { PortalView } from '@/types/rahnuma';
+
+const TOPBAR_POINTS = [
+  {
+    text: 'Book a free consultation—your identity stays anonymous and your data secure.',
+    cta: 'Book Free Consultation →',
+    href: VIEW_PATHS.specialists,
+    icon: ShieldCheck,
+  },
+  {
+    text: '100% Confidential · Pseudonym Protection & Discreet Notifications',
+    cta: 'Submit Private Case →',
+    href: VIEW_PATHS['submit-case'],
+    icon: Lock,
+  },
+  {
+    text: 'Verified Muftis, Family Counsellors, Psychologists & Legal Advisors Online',
+    cta: 'Browse Specialists →',
+    href: VIEW_PATHS.specialists,
+    icon: Sparkles,
+  },
+];
 
 const NAV_ITEMS: Array<{ view: PortalView; label: string; href: string }> = [
   { view: 'specialists', label: 'Specialists', href: VIEW_PATHS.specialists },
@@ -25,6 +46,40 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-sm">
+      {/* Continuous Announcement Topbar Slider */}
+      <div
+        aria-label="Confidential consultation announcements"
+        className="overflow-hidden border-b border-emerald-900/40 bg-[#022C22] text-white"
+      >
+        <div className="animate-topbar-marquee py-2">
+          {[0, 1].map((dupIdx) => (
+            <div key={dupIdx} aria-hidden={dupIdx === 1} className="flex shrink-0 items-center">
+              {TOPBAR_POINTS.map((item, idx) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={`${dupIdx}-${idx}`}
+                    className="flex items-center gap-2.5 px-7 text-xs font-medium text-emerald-50"
+                  >
+                    <Icon className="h-3.5 w-3.5 shrink-0 text-[#F59E0B]" />
+                    <span className="whitespace-nowrap">{item.text}</span>
+                    <Link
+                      href={item.href}
+                      tabIndex={dupIdx === 1 ? -1 : undefined}
+                      onClick={closeMenu}
+                      className="whitespace-nowrap font-semibold text-[#F59E0B] underline-offset-2 hover:text-amber-300 hover:underline"
+                    >
+                      {item.cta}
+                    </Link>
+                    <span aria-hidden="true" className="ml-4 h-1 w-1 rounded-full bg-emerald-500/60" />
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-8 px-4 sm:px-6 lg:px-8">
         {/* Zone 1: Single-element Brand Wordmark */}
         <Link

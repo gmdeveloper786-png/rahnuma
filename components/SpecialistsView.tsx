@@ -677,9 +677,9 @@ export default function SpecialistsView() {
                   : `Confirm Booking · PKR ${activeSpecialist.feeAmount.toLocaleString()}`}
               </button>
 
-              <div className="mt-3 flex items-center gap-1.5 text-[11px] text-slate-500">
-                <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                <span>Bookings sync directly to your Member Portal</span>
+              <div className="mt-3 flex items-center gap-1.5 text-[11px] font-medium text-[#064E3B]">
+                <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-[#064E3B]" />
+                <span>Your identity stays anonymous and your data secure.</span>
               </div>
             </form>
           </aside>
