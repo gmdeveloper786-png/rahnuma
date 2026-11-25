@@ -17,6 +17,7 @@ import {
   X,
 } from 'lucide-react';
 import { usePortal, VIEW_PATHS } from '@/context/PortalContext';
+import RahnumaLogo from '@/components/RahnumaLogo';
 import type { PortalView } from '@/types/rahnuma';
 
 const SAFEGUARDING_RESOURCES = [
@@ -182,7 +183,7 @@ export default function Header() {
         aria-label="Confidential consultation announcements"
         className="overflow-hidden border-b border-emerald-900/40 bg-[#022C22] text-white"
       >
-        <div className="animate-topbar-marquee py-2">
+        <div className="animate-topbar-marquee py-1.5 sm:py-2">
           {[0, 1].map((dupIdx) => (
             <div key={dupIdx} aria-hidden={dupIdx === 1} className="flex shrink-0 items-center">
               {TOPBAR_POINTS.map((item, idx) => {
@@ -190,7 +191,7 @@ export default function Header() {
                 return (
                   <div
                     key={`${dupIdx}-${idx}`}
-                    className="flex items-center gap-2.5 px-7 text-xs font-medium text-emerald-50"
+                    className="flex items-center gap-2 px-4 text-[11px] font-medium text-emerald-50 sm:gap-2.5 sm:px-7 sm:text-xs"
                   >
                     <Icon className="h-3.5 w-3.5 shrink-0 text-[#F59E0B]" />
                     <span className="whitespace-nowrap">{item.text}</span>
@@ -211,14 +212,15 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-8 px-4 sm:px-6 lg:px-8">
-        {/* Zone 1: Single-element Brand Wordmark */}
+      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-2 px-3 sm:h-16 sm:gap-6 sm:px-6 lg:gap-8 lg:px-8">
+        {/* Zone 1: Brand Logo */}
         <Link
           href="/"
           onClick={closeMenu}
-          className="whitespace-nowrap shrink-0 text-left font-display text-xl font-bold tracking-tight text-[#064E3B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#064E3B] focus-visible:ring-offset-2"
+          aria-label="Rahnuma Home"
+          className="whitespace-nowrap shrink-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#064E3B] focus-visible:ring-offset-2"
         >
-          RAHNUMA
+          <RahnumaLogo variant="light" />
         </Link>
 
         {/* Zone 2: 5 concise single-line text nav links */}
@@ -246,12 +248,12 @@ export default function Header() {
         </nav>
 
         {/* Zone 3: Global Search + Primary Action */}
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           <button
             type="button"
             aria-label="Search specialists, fatwas, or safeguarding resources"
             onClick={() => setSearchOpen(true)}
-            className="inline-flex h-9 items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-2.5 text-xs font-medium text-slate-600 transition-colors hover:border-[#064E3B]/40 hover:bg-white hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#064E3B] sm:px-3"
+            className="inline-flex h-9 w-9 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-slate-50 text-xs font-medium text-slate-600 transition-colors hover:border-[#064E3B]/40 hover:bg-white hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#064E3B] md:w-auto md:px-3"
           >
             <Search className="h-4 w-4 text-[#064E3B]" />
             <span className="hidden md:inline">Search...</span>
@@ -260,7 +262,7 @@ export default function Header() {
           <Link
             href={VIEW_PATHS.portal}
             onClick={closeMenu}
-            className={`whitespace-nowrap shrink-0 rounded-lg px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#064E3B] focus-visible:ring-offset-2 ${
+            className={`whitespace-nowrap shrink-0 rounded-lg px-2.5 py-2 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#064E3B] focus-visible:ring-offset-2 sm:px-4 sm:text-sm ${
               activeView === 'portal'
                 ? 'bg-[#022C22] text-white'
                 : 'bg-[#064E3B] text-white hover:bg-[#053B2D]'
@@ -273,7 +275,7 @@ export default function Header() {
             type="button"
             aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
             onClick={() => setMobileOpen((prev) => !prev)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 lg:hidden"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 lg:hidden"
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>

@@ -8,6 +8,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Modals from '@/components/Modals';
 import ToastContainer from '@/components/ToastContainer';
+import BackToTopButton from '@/components/BackToTopButton';
 import { PortalSkeleton } from '@/components/Skeletons';
 
 function PortalShell({ children }: { children: React.ReactNode }) {
@@ -37,6 +38,7 @@ function PortalShell({ children }: { children: React.ReactNode }) {
       <Footer />
       <Modals />
       <ToastContainer />
+      <BackToTopButton />
     </div>
   );
 }

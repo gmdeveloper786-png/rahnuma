@@ -3,6 +3,7 @@
 import React from 'react';
 import { ShieldCheck, Lock, BookOpenCheck } from 'lucide-react';
 import { usePortal } from '@/context/PortalContext';
+import RahnumaLogo from '@/components/RahnumaLogo';
 
 export default function Footer() {
   const { setActiveView, navigateToDirectory, navigateToKnowledge } = usePortal();
@@ -17,9 +18,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <div className="font-display text-xl font-bold tracking-tight text-white">
-              RAHNUMA
-            </div>
+            <RahnumaLogo variant="dark" showSubtitle />
             <p className="mt-3 text-sm leading-relaxed text-slate-300">
               Confidential Islamic and family counselling portal uniting verified religious
               scholarship, family mediation, mental wellbeing care, and crisis safeguarding.

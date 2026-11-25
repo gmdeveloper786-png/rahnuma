@@ -171,6 +171,7 @@ const FAQS = [
 export default function HomeView() {
   const {
     store,
+    isAuthenticated,
     setActiveView,
     navigateToDirectory,
     navigateToKnowledge,
@@ -211,7 +212,7 @@ export default function HomeView() {
   return (
     <div className="pb-16">
       {/* 1. 5-Slide Hero Carousel */}
-      <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-7xl px-3 pt-4 sm:px-6 sm:pt-6 lg:px-8">
         <div
           onMouseEnter={() => setIsSliderPaused(true)}
           onMouseLeave={() => setIsSliderPaused(false)}
@@ -224,24 +225,24 @@ export default function HomeView() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -18 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="grid min-h-[320px] grid-cols-1 items-stretch lg:min-h-[360px] lg:grid-cols-12"
+              className="grid grid-cols-1 items-stretch lg:min-h-[360px] lg:grid-cols-12"
             >
-              <div className="flex flex-col justify-center px-6 py-10 pb-16 sm:px-10 lg:col-span-7 lg:py-12 lg:pb-16">
+              <div className="flex flex-col justify-center px-5 pt-4 pb-16 sm:px-10 sm:pt-6 sm:pb-16 lg:col-span-7 lg:py-12 lg:pb-16">
                 <h1
-                  className="font-display text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl lg:text-[42px]"
+                  className="font-display text-2xl font-bold leading-tight tracking-tight text-white sm:text-4xl lg:text-[42px]"
                   style={{ textWrap: 'balance' }}
                 >
                   {currentSlide.headingPrefix}
                   <span className="text-[#F59E0B]">{currentSlide.headingHighlight}</span>
                   {currentSlide.headingSuffix}
                 </h1>
-                <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-200 sm:text-base">
+                <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-200 sm:mt-4 sm:text-base">
                   {currentSlide.description}
                 </p>
               </div>
 
-              {/* Right editorial slide illustration */}
-              <div className="relative hidden min-h-[320px] lg:col-span-5 lg:block">
+              {/* Editorial slide image — top banner on mobile/tablet, right column on desktop */}
+              <div className="relative order-first h-48 w-full sm:h-64 lg:order-last lg:col-span-5 lg:h-auto lg:min-h-[360px]">
                 <Image
                   src={MEDIA_ASSETS[currentSlide.imageKey]}
                   alt={currentSlide.imageAlt}
@@ -250,13 +251,13 @@ export default function HomeView() {
                   sizes="(min-width: 1024px) 42vw, 100vw"
                   className="object-cover object-center"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#043D2F] via-[#043D2F]/25 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#043D2F] via-[#043D2F]/25 to-transparent lg:bg-gradient-to-r lg:from-[#043D2F] lg:via-[#043D2F]/25 lg:to-transparent" />
               </div>
             </motion.div>
           </AnimatePresence>
 
           {/* Slider Navigation Controls */}
-          <div className="absolute inset-x-0 bottom-4 z-10 flex items-center justify-between px-6 sm:px-10">
+          <div className="absolute inset-x-0 bottom-3.5 z-10 flex items-center justify-between px-5 sm:bottom-4 sm:px-10">
             <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="Hero slides">
               {HERO_SLIDES.map((slide, idx) => (
                 <button
@@ -741,7 +742,7 @@ export default function HomeView() {
                   onClick={() => setActiveView('portal')}
                   className="whitespace-nowrap rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                 >
-                  Sign In to Portal
+                  {isAuthenticated ? 'Open My Dashboard' : 'Sign In to Portal'}
                 </button>
               </div>
               <p className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-[#064E3B]">
